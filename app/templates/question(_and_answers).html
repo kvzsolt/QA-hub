@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+
+{% block title %}List Question answers{% endblock %}
+
+{% block content %}
+
+<div class="question-detail">
+    <h1>{{ question.title }}</h1>
+    <p>{{ question.message }}</p>
+
+    <form action="/question/{{ question.id }}/delete" method="POST">
+        <button class="button-10" type="submit">Delete</button>
+    </form>
+
+    {% for tag in tags %}
+        <div class="tag">
+            <h5>{{ tag.name }}</h5>
+            <form action="/question/{{ question.id }}/tag/{{ tag.id }}/delete" method="POST">
+                <button class="button-10" type="submit">Delete tag</button>
+            </form>
+        </div>
+    {% endfor %}
+
+    <form action="{{ url_for('routes.add_tag', question_id=question.id) }}" method="GET">
+        <button class="button-10" type="submit">Add tag</button>
+    </form>
+
+    <a href="{{ url_for('routes.route_edit_question', question_id=question.id) }}">Edit question</a>
+
+    <h2>Answers:</h2>
+    <table class="answers-table">
+        <thead>
+            <tr>
+                <th>Submission Time</th>
+                <th>Message</th>
+                <th>Vote Number</th>
+                <th>Image</th>
+                <th>Is Answer Accepted</th>
+                <th>Actions</th>
+                <th>Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for answer in answers %}
+                <tr>
+                    <td>{{ answer.submission_time }}</td>
+                    <td>{{ answer.message }}</td>
+                    <td>
+                        {{ answer.vote_number }}
+                        <a href="{{ url_for('routes.answer_vote', answer_id=answer.id, vote='+', user_id=answer.user_id) }}">+1</a>
+                        <a href="{{ url_for('routes.answer_vote', answer_id=answer.id, vote='-', user_id=answer.user_id) }}">-1</a>
+                    </td>
+                    <td>
+                        {% if answer.image %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ answer.image) }}" alt="Answer Image" width="100">
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if answer.is_answer_accepted == 0 %}
+                            <form action="{{ url_for('routes.accept_answer', answer_id=answer.id, data=1) }}" method="post">
+                                <button class="non_accepted_answer" type="submit"></button>
+                            </form>
+                        {% else %}
+                            <form action="{{ url_for('routes.accept_answer', answer_id=answer.id, data=0) }}" method="post">
+                                <button class="accepted_answer" type="submit"></button>
+                            </form>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/answer/{{ answer.id }}/delete" class="btn btn-danger">Delete</a>
+                        <a href="/answer/{{ answer.id }}/edit" class="btn btn-warning">Edit</a>
+                    </td>
+                    <td>
+                        <form action="{{ url_for('routes.add_new_answers_comment', question_id=question.id, answer_id=answer.id) }}" method="POST">
+                            <textarea name="add_comment_message" required></textarea>
+                            <button class="button-10" type="submit">Add comment</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        {% for answer_comment in answer_comments %}
+                            {% if answer_comment.answer_id == answer.id %}
+                                <div class="answer-comment">
+                                    <p>{{ answer_comment.message }}
+                                        <a href="{{ url_for('routes.answer_comment_delete', comment_id=answer_comment.id) }}" class="delete-link">Delete</a>
+                                        <em>{{ answer_comment.submission_time }}</em>
+                                    </p>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('routes.add_new_answer', question_id=question.id) }}" class="btn btn-primary">Add new answer</a>
+
+    <div class="question-comments">
+        <h3>Comments:</h3>
+        <form action="{{ url_for('routes.add_new_question_comment', question_id=question.id) }}" method="POST">
+            {% for comment in comments %}
+                <div class="comment">
+                    <p>{{ comment.message }}
+                        <a class="delete-link" href="{{ url_for('routes.question_comment_delete', comment_id=comment.id) }}">Delete</a>
+                        <em>{{ comment.submission_time }}</em>
+                    </p>
+                </div>
+            {% endfor %}
+            <textarea name="message" required></textarea>
+            <button class="button-10" type="submit">Add comment</button>
+        </form>
+    </div>
+    <a href="{{ url_for('routes.route_list') }}" class="btn btn-secondary">Back</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block title %}Registration{% endblock %}
+
+{% block content %}
+    <div class="reg-div">
+    <section class="registration-section">
+        <h2>Registration</h2>
+        <form method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control", placeholder="Enter e-mail address") }}
+                {% if form.email.errors %}
+                    <span class="text-danger">{{ form.email.errors[0] }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control", placeholder="Enter a valid password") }}
+                {% if form.password.errors %}
+                    <span class="text-danger">{{ form.password.errors[0] }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.password2.label(class="form-label") }}
+                {{ form.password2(class="form-control", placeholder="Enter the password again") }}
+                {% if form.password2.errors %}
+                    <span class="text-danger">{{ form.password2.errors[0] }}</span>
+                {% endif %}
+            </div>
+
+            <button class="button-4" type="submit">Register</button>
+        </form>
+    </section>
+    </div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block title %}Q&A Site{% endblock %}
+
+{% block content %}
+    <div class="question-list">
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Submission Time</th>
+                    <th>View Number</th>
+                    <th>Vote Number</th>
+                    <th>Title</th>
+                    <th>Message</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for question in first_five_question %}
+                    <tr>
+                        <td>{{ question.id }}</td>
+                        <td>{{ question.submission_time }}</td>
+                        <td>{{ question.view_number }}</td>
+                        <td>
+                            {{ question.vote_number }}
+                            <a href="{{ url_for('routes.route_question_votes', question_id=question.id, vote='+', user_id=question.user_id) }}">+1</a>
+                            <a href="{{ url_for('routes.route_question_votes', question_id=question.id, vote='-', user_id=question.user_id) }}">-1</a>
+                        </td>
+                        <td><a href="{{ url_for('routes.route_question_id', question_id=question.id) }}">{{ question.title }}</a></td>
+                        <td>{{ question.message }}</td>
+                        <td>
+                            {% if question.image %}
+                                <img src="{{ url_for('static', filename='uploads/' ~ question.image) }}" alt="Question Image" width="100">
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url_for('routes.route_list') }}">All questions</a>
+    </div>
+{% endblock %}

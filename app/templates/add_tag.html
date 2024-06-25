@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}Add tag{% endblock %}
+
+{% block content %}
+    <div class="add-tag-container">
+        <h1>Add tag to question</h1>
+
+        <div class="question-section">
+            <h2>{{ question.title }}</h2>
+            <p>{{ question.message }}</p>
+        </div>
+
+        <form method="POST" class="add-tag-form">
+            {{ form.hidden_tag() }}
+
+            <div class="new-tag form-group">
+                {{ form.new_tag.label }}
+                {{ form.new_tag(class="form-control") }}
+                {% if form.new_tag.errors %}
+                    <div class="text-danger">
+                        {% for error in form.new_tag.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="existing-tag form-group">
+                {{ form.existing_tag.label }}
+                {{ form.existing_tag(class="form-control") }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+        </form>
+    </div>
+{% endblock %}

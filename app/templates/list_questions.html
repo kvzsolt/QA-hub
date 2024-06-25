@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block title %}Összes kérdés{% endblock %}
+
+{% block content %}
+
+<div class="order-and-search">
+    <div class="order-div">
+        <form action="{{ url_for('routes.route_list') }}" class="order-by">
+            <label for="order-by-select">Order by:</label>
+            <select id="order-by-select" name="order_by">
+                <option value="id">Id</option>
+                <option value="submission_time">Submission time</option>
+                <option value="view_number">View Number</option>
+                <option value="vote_number">Vote Number</option>
+            </select>
+
+            <label for="order-direction-select">Order direction:</label>
+            <select id="order-direction-select" name="order_direction">
+                <option value="ASC">ASC</option>
+                <option value="DESC">DESC</option>
+            </select>
+
+            <button type="submit">Sort list</button>
+        </form>
+    </div>
+
+    <div class="search-div">
+        <form action="{{ url_for('routes.route_list') }}" method="get" class="search">
+            <input type="text" name="search" required placeholder="Search..." />
+            <button type="submit">Search</button>
+        </form>
+    </div>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Submission Time</th>
+            <th>View Number</th>
+            <th>Vote Number</th>
+            <th>Title</th>
+            <th>Message</th>
+            <th>Image</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for question in questions %}
+        <tr>
+            <td>{{ question.id }}</td>
+            <td>{{ question.submission_time }}</td>
+            <td>{{ question.view_number }}</td>
+            <td>
+                {{ question.vote_number }}
+                <a href="{{ url_for('routes.route_question_votes', question_id=question.id, vote='+', user_id=question.user_id) }}">+1</a>
+                <a href="{{ url_for('routes.route_question_votes', question_id=question.id, vote='-', user_id=question.user_id) }}">-1</a>
+            </td>
+            <td>
+                <a href="{{ url_for('routes.route_question_id', question_id=question.id) }}">
+                {% if search_phrase %}
+                    {{ question.title|replace(search_phrase, '<mark>' + search_phrase + '</mark>')|safe }}
+                {% else %}
+                    {{ question.title }}
+                {% endif %}
+                </a>
+            </td>
+            <td>{{ question.message }}</td>
+            <td>
+                {% if question.image %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ question.image) }}" alt="Question Image" width="100">
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

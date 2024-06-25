@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/login_alert.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/register.js') }}"></script>
+    {% endblock %}
+</head>
+
+<body>
+
+    <div class="menu">
+        <div class="menu-left">
+            <form action="{{ url_for('routes.list_tags') }}" method="GET">
+                <button class="button-10" role="button" type="submit">Tags</button>
+            </form>
+
+            {% if 'email' in session %}
+            <a href="{{ url_for('routes.route_add_question') }}">New question</a>
+            {% endif %}
+        </div>
+
+        <div class="menu-middle">
+            <div class="main-title-div">
+                <div class="main-title">
+                    <h1 class="title">LIST</h1>
+                    <h2 class="title2">OF QUESTIONS</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-right">
+            {% if 'email' in session %}
+            <div class="login-div">
+                <span><a href="{{ url_for('routes.specific_user_questions', user_id=session['user_id']) }}">{{ session['email'] }}</a></span>
+                <span> | </span>
+                <a href="{{ url_for('routes.logout') }}">Logout</a>
+                <a href="{{ url_for('routes.users_list') }}">Users</a>
+            </div>
+            {% else %}
+            <div class="login-div">
+                <a href="{{ url_for('routes.login') }}">Login</a>
+                <a href="{{ url_for('routes.register') }}">Registration</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+
+</html>

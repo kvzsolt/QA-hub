@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}Users List{% endblock %}
+
+{% block content %}
+<section>
+    <header>
+        <h1>Users List</h1>
+    </header>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Registration Date</th>
+                <th>Number of asked questions</th>
+                <th>Number of answers</th>
+                <th>Number of comments</th>
+                <th>Reputation</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td><a href="{{ url_for('routes.specific_user_questions', user_id=user.id) }}">{{ user.email }}</a></td>
+                    <td>{{ user.registration_date }}</td>
+                    <td>{{ user.number_of_asked_questions }}</td>
+                    <td>{{ user.number_of_answers }}</td>
+                    <td>{{ user.number_of_comments }}</td>
+                    <td>{{ user.reputation }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div>
+        <a href="{{ url_for('routes.route_list') }}" class="btn btn-secondary">Back</a>
+    </div>
+</section>
+{% endblock %}

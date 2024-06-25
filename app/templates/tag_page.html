@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}Tag Page{% endblock %}
+
+{% block content %}
+<div class="tag-page">
+    <header>
+        <h1>Tags</h1>
+    </header>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Tag</th>
+                <th scope="col">Number of questions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tag in tags %}
+                <tr>
+                    <td>{{ tag.name }}</td>
+                    <td>{{ tag.num_of_use }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="back-link">
+        <a href="{{ url_for('routes.route_list') }}" class="btn btn-secondary">Back</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <div class="login-card">
+        <h2>{{ error_message|default("Login") }}</h2>
+        <form method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control", placeholder="Email address") }}
+                {% if form.email.errors %}
+                    <span class="text-danger">{{ form.email.errors[0] }}</span>
+                {% endif %}
+            </p>
+            <p>
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control", placeholder="Password") }}
+                {% if form.password.errors %}
+                    <span class="text-danger">{{ form.password.errors[0] }}</span>
+                {% endif %}
+            </p>
+            <p><input class="button-4" role="button" type="submit" value="Login"/></p>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+{% block title %}User Profile{% endblock %}
+
+{% block content %}
+<section class="profile-div">
+    <header>
+        <h2>Profile</h2>
+    </header>
+
+    <div class="user-details">
+        <p class="user-title">{{ user.username }}</p>
+        <p>Registered on: {{ user.registration_date }}</p>
+        <p>Number of asked questions: {{ user.number_of_asked_questions }}</p>
+        <p>Number of answers: {{ user.number_of_answers }}</p>
+        <p>Number of comments: {{ user.number_of_comments }}</p>
+        <p>Reputation: {{ user.reputation }}</p>
+    </div>
+</section>
+
+<section class="questions-section">
+    <header>
+        <h2>Questions</h2>
+    </header>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Message</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in questions %}
+            <tr>
+                <td>{{ question.id }}</td>
+                <td>{{ question.title }}</td>
+                <td>{{ question.message }}</td>
+                <td>
+                    {% if question.image %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ question.image) }}" alt="Question Image" width="100">
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<section class="answers-section">
+    <header>
+        <h2>Answers</h2>
+    </header>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Submission Time</th>
+                <th>Vote Number</th>
+                <th>Message</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for answer in answers %}
+            <tr>
+                <td>{{ answer.id }}</td>
+                <td>{{ answer.submission_time }}</td>
+                <td>{{ answer.vote_number }}</td>
+                <td>{{ answer.message }}</td>
+                <td>
+                    {% if answer.image %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ answer.image) }}" alt="Answer Image" width="100">
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<section class="comments-section">
+    <header>
+        <h2>Comments</h2>
+    </header>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Question Id</th>
+                <th>Submission Time</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for comment in comments %}
+            <tr>
+                <td>{{ comment.question_id }}</td>
+                <td>{{ comment.submission_time }}</td>
+                <td>{{ comment.message }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<a class="a-hover" onclick="history.back()">Back</a>
+{% endblock %}
